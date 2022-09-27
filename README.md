@@ -38,5 +38,7 @@ test
 
 pipeline.add(install, test)
 
+const pathToFile = '/some/file/path'
+await pipeline.writeJSON(pathToFile);
 
 ```
