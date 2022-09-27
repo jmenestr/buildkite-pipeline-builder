@@ -1,26 +1,28 @@
 import { CommandStep } from "./steps/command";
 import * as fs from 'fs/promises';
+import { GroupStep } from "./steps/group";
 
-type Steps = Array<CommandStep>
+type Steps = Array<CommandStep | GroupStep | CommandStep> 
+type Stringifyer = (pipelineObject: object) => string;
 export class Pipeline {
-    private steps: Array<CommandStep> = [];
+    private steps: Steps = [];
     constructor(public readonly name: string) {}
 
-    add(...steps: Steps ) {
+    addSteps(...steps: Steps ) {
         this.steps.push(...steps);
     }
 
     toJSON() {
-        return JSON.stringify(
-            {
-                steps: this.steps.map(step => step.toJSON())
-            }
-        )
+        return {
+            steps: this.steps.map(step => step.toJSON())
+        }
     }
 
-    async writeJSON(path: string) {
+    async writeFile(path: string, stringifyer: Stringifyer = JSON.stringify) {
         const pipeline = this.toJSON();
-        return await fs.writeFile(path, pipeline);
+        const stringPipeline = stringifyer(pipeline);
+        return await fs.writeFile(path, stringPipeline);
     }
 
 }
+

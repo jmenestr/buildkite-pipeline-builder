@@ -40,7 +40,7 @@ export class CommandStep extends BaseStep implements JSONSerialization<CommandSt
 
 private _commands: Array<String> = [];
 private _label: string | undefined = undefined;
-private _agent: { [agentKey: string]: string }  = {}
+private _agent: { [agentKey: string]: string };
 // withArtifacts <-- DONE
 private _artifact_paths: Set<string> = new Set();
 // withBranches
@@ -81,8 +81,15 @@ private _timeout_in_minutes?: number;
         return this;
     }
 
+    private _setAgent(key: string, value: string) {
+        if (!this._agent) {
+            this._agent = {}
+        }
+        this._agent[key] = value;
+    }
+
     withQueue(queue: string) {
-        this._agent.queue = queue
+        this._setAgent('queue', queue)
         return this;
     }
 
@@ -90,7 +97,7 @@ private _timeout_in_minutes?: number;
         /**
          * agent keys of queue are treated differently with than just general tagged agents
          */
-        this._agent[key] = tag
+         this._setAgent(key, tag)
         return this;
     }
 
@@ -121,7 +128,7 @@ private _timeout_in_minutes?: number;
     }
 
     toJSON() {
-        return {
+        return BaseStep.pruneJson({
             ...super.toJSON(),
             commands: this._commands,
             label: this._label,
@@ -130,6 +137,6 @@ private _timeout_in_minutes?: number;
             concurrency_group: this._concurrency_group,
             timeout_in_minutes: this._timeout_in_minutes,
             artifact_paths: Array.from(this._artifact_paths)
-        }
+        })
     }
 }

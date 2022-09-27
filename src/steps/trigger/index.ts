@@ -55,13 +55,13 @@ class Build implements JSONSerialization<TriggerStepBuildAttribute> {
 
     // Need to find a general way to prune undefined
     toJSON() {
-        return {
+        return BaseStep.pruneJson({
             message: this._message,
             commit: this._commit,
             branch: this._branch,
             env: this._env,
             meta_data: this._meta_data
-        }
+        })
     }
 }
 // Should I slugify this? Pipelines should also be slugged?
@@ -98,7 +98,7 @@ export class TriggerStep extends BaseStep implements JSONSerialization<TriggerSt
     }
 
     toJSON() {
-        return {
+        return BaseStep.pruneJson({
             ...super.toJSON(),
             trigger: this._triggerTarget,
             label: this._label, 
@@ -107,7 +107,7 @@ export class TriggerStep extends BaseStep implements JSONSerialization<TriggerSt
             if: this._if,
             skip: this._skip,
             build: this.build.toJSON()
-        };
+        });
     }
 }
 
