@@ -1,9 +1,11 @@
 import { JSONSerialization } from "./serialization";
 
-export interface BaseStepShape {
+interface BaseStepShape {
     dependsOn?: Array<string>;
     allowDependencyFailure?: boolean;
 }
+
+export type StepShape<T> = T & BaseStepShape;
 export abstract class BaseStep implements JSONSerialization<BaseStepShape> {
     private _depends_on: Set<string> = new Set();
     private _allow_dependency_failure?: boolean;

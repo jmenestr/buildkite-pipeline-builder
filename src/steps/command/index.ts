@@ -1,4 +1,4 @@
-import { BaseStep, BaseStepShape } from "../base/BaseStep";
+import { BaseStep, StepShape } from "../base/BaseStep";
 import { JSONSerialization } from "../base/serialization";
 
 type AutomaticRetry = boolean | {
@@ -12,7 +12,7 @@ type ManualRetry = boolean | {
     reason?: string
 }
 
-export type CommandStepShape = {
+export type CommandStepShape = StepShape<{
     commands: Array<String>;
     label?: string;
     agent?: { [agentKey: string]: string }
@@ -31,7 +31,7 @@ export type CommandStepShape = {
     retry?: Map<'automatic', AutomaticRetry> | Map<'manual', ManualRetry>
     skip?: boolean | string;
     timeout_in_minutes?: number;
-} & BaseStepShape
+}>
 
 /** 
  * Command Step

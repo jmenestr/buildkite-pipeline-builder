@@ -1,7 +1,7 @@
-import { BaseStep, BaseStepShape } from "../base/BaseStep";
+import { BaseStep, StepShape } from "../base/BaseStep";
 import { JSONSerialization } from "../base/serialization";
 
-export type TriggerStepShape = {
+export type TriggerStepShape = StepShape<{
     trigger: string;
     build?: TriggerStepBuildAttribute;
     label?: string;
@@ -9,7 +9,7 @@ export type TriggerStepShape = {
     branches?: string;
     if?: string;
     skip?: string | boolean;
-} & BaseStepShape
+}>
 
 interface TriggerStepBuildAttribute {
     message?: string;
