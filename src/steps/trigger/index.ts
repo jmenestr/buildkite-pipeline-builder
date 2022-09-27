@@ -54,7 +54,7 @@ class Build implements JSONSerialization<TriggerStepBuildAttribute> {
     }
 
     // Need to find a general way to prune undefined
-    toJSON<TriggerStepBuildAttribute>() {
+    toJSON() {
         return {
             message: this._message,
             commit: this._commit,
