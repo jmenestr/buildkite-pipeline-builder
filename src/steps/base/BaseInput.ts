@@ -1,6 +1,6 @@
-import { Fields } from "../fields";
-import { SelectFieldShape } from "../fields/SelectField";
-import { TextFieldShape } from "../fields/TextField";
+import { UniqueChainableList } from "../fields";
+import { SelectField, SelectFieldShape } from "../fields/SelectField";
+import { TextField, TextFieldShape } from "../fields/TextField";
 import { StepShape, BaseStep } from "./BaseStep";
 import { JSONSerialization } from "./serialization";
 
@@ -13,7 +13,7 @@ export type BaseInputShape<T = {}> = StepShape<{
 
 export class BaseInputStep extends BaseStep implements JSONSerialization<BaseInputShape> {
     private _prompt?: string;
-    public fields = new Fields(this)
+    public fields = new UniqueChainableList<typeof this, TextField | SelectField>(this, 'key')
     private _branches?: string;
     private _if?: string;
     

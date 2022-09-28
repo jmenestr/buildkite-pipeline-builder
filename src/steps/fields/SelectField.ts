@@ -18,7 +18,7 @@ export type SelectFieldShape = {
 } 
 
 export class SelectField implements JSONSerialization<SelectFieldShape>{
-    private _options: Array<Option> = [];
+    private _options: Array<Option> = []; // This could be implmeent using the fields as well
     private _select: string;
     private _key: string;
     get key() { return this._key }
@@ -26,8 +26,8 @@ export class SelectField implements JSONSerialization<SelectFieldShape>{
     private _required: string;
     private _default: string;
 
-    constructor(prompt: string, key: string) {
-        this._select = prompt;
+    constructor(select: string, key: string) {
+        this._select = select;
         this._key = key;
     }
 
