@@ -29,7 +29,7 @@ test('CommandStep correctly accepts a label', t => {
 test('commands can be added with add', t => {
     const install = new CommandStep('yarn test', 'I am label');
     const addedCommand = 'added command';
-    install.add(addedCommand)
+    install.addCommands(addedCommand)
     const result = install.toJSON();
 
     t.like(result, {
@@ -108,7 +108,7 @@ test('dependsOn should allow you to add a key', t => {
     const result = test.toJSON();
 
     t.like(result, {
-        dependsOn: ['key']
+        depends_on: ['key']
     })
 });
 
@@ -119,7 +119,7 @@ test('dependsOn should allow you to add multiple keys', t => {
     const result = test.toJSON();
 
     t.like(result, {
-        dependsOn: ['key', 'key2']
+        depends_on: ['key', 'key2']
     })
 });
 
@@ -130,7 +130,7 @@ test('dependsOn should not allow you to add more than one of the same key', t =>
     const result = test.toJSON();
 
     t.like(result, {
-        dependsOn: ['key']
+        depends_on: ['key']
     })
 });
 

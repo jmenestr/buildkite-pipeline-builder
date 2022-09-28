@@ -76,8 +76,8 @@ private _timeout_in_minutes?: number;
     }
 
 
-    add(command: string) {
-        this._commands.push(command);
+    addCommands(...commands: Array<string>) {
+        this._commands.push(...commands);
         return this;
     }
 
@@ -133,6 +133,7 @@ private _timeout_in_minutes?: number;
             commands: this._commands,
             label: this._label,
             agent: this._agent,
+            key: this._key,
             concurrency: this._concurrency,
             concurrency_group: this._concurrency_group,
             timeout_in_minutes: this._timeout_in_minutes,

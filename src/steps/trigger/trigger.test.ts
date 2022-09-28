@@ -111,7 +111,7 @@ test('dependsOn should accept one key', t => {
 
     trigger.dependsOn('key')
     t.like(trigger.toJSON(), {
-        dependsOn: ['key']
+        depends_on: ['key']
     })
 });
 
@@ -121,7 +121,7 @@ test('dependsOn should accept more than one key', t => {
 
     trigger.dependsOn('key', 'key2')
     t.like(trigger.toJSON(), {
-        dependsOn: ['key', 'key2']
+        depends_on: ['key', 'key2']
     })
 })
 test('dependsOn should should not duplicate keys', t =>{
@@ -130,6 +130,6 @@ test('dependsOn should should not duplicate keys', t =>{
 
     trigger.dependsOn('key', 'key')
     t.like(trigger.toJSON(), {
-        dependsOn: ['key']
+        depends_on: ['key']
     })
 })
