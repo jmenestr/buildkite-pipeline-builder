@@ -24,9 +24,9 @@ export class Pipeline implements JSONSerialization<PipelineShape> {
         }
     }
 
-    async writeFile(path: string, stringifyer: Stringify = JSON.stringify) {
+    async writeFile(path: string, stringifyFn: Stringify = JSON.stringify) {
         const pipeline = this.toJSON();
-        const stringPipeline = stringifyer(pipeline);
+        const stringPipeline = stringifyFn(pipeline);
         return await fs.writeFile(path, stringPipeline);
     }
 
