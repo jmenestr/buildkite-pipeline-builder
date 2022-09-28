@@ -12,6 +12,7 @@ export interface TextFieldShape {
 export class TextField implements JSONSerialization<TextFieldShape> {
     private _text: string;
     private _key: string;
+    get key() { return this._key }
     private _hint?: string;
     private _required?: boolean;
     private _default?: string;

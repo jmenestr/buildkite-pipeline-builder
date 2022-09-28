@@ -21,6 +21,7 @@ export class SelectField implements JSONSerialization<SelectFieldShape>{
     private _options: Array<Option> = [];
     private _select: string;
     private _key: string;
+    get key() { return this._key }
     private _hint: string;
     private _required: string;
     private _default: string;
