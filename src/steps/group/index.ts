@@ -3,7 +3,7 @@ import { JSONSerialization } from "../base/serialization";
 import { CommandStep, CommandStepShape } from "../command";
 import { TriggerStep, TriggerStepShape } from "../trigger";
 
-type GroupStepShape = StepShape<{
+export type GroupStepShape = StepShape<{
     group: string;
     steps: Array<CommandStepShape | TriggerStepShape>
     key?: string;

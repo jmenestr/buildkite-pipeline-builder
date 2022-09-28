@@ -1,3 +1,3 @@
-export { Pipeline } from './Pipeline';
 export * from './steps';
+export { Pipeline } from './Pipeline';
 
