@@ -1,5 +1,5 @@
+import { pruneJSON } from "../../utils";
 import { BaseInputShape, BaseInputStep } from "../base/BaseInput";
-import { BaseStep } from "../base/BaseStep";
 import { JSONSerialization } from "../base/serialization";
 
 export enum BlockedState {
@@ -27,9 +27,14 @@ export class BlockStep extends BaseInputStep implements JSONSerialization<BlockS
     withKey(key: string) {
         this._key = key;
     }
+
+    blockedState(state: BlockedState) {
+        this._blocked_state = state;
+        return this;
+    }
     
     toJSON() {
-        return BaseStep.pruneJson({
+        return pruneJSON({
             ...super.toJSON(),
             block: this._block,
             key: this._key,

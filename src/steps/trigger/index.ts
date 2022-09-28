@@ -1,3 +1,4 @@
+import { pruneJSON } from "../../utils";
 import { BaseStep, StepShape } from "../base/BaseStep";
 import { JSONSerialization } from "../base/serialization";
 
@@ -55,7 +56,7 @@ class Build implements JSONSerialization<TriggerStepBuildAttribute> {
 
     // Need to find a general way to prune undefined
     toJSON() {
-        return BaseStep.pruneJson({
+        return pruneJSON({
             message: this._message,
             commit: this._commit,
             branch: this._branch,
@@ -98,7 +99,7 @@ export class TriggerStep extends BaseStep implements JSONSerialization<TriggerSt
     }
 
     toJSON() {
-        return BaseStep.pruneJson({
+        return pruneJSON({
             ...super.toJSON(),
             trigger: this._triggerTarget,
             label: this._label, 

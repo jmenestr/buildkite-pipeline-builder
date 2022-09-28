@@ -1,6 +1,5 @@
+import { pruneJSON } from "../../utils";
 import { JSONSerialization } from "../base/serialization";
-
-interface TextFieldShape {}
 
 export interface TextFieldShape {
     text: string;
@@ -37,12 +36,12 @@ export class TextField implements JSONSerialization<TextFieldShape> {
     }
 
     toJSON() {
-        return {
+        return pruneJSON({
             text: this._text,
             key: this._key,
             hint: this._hint,
             required: this._required,
             default: this._default,
-        }
+        })
     }
 }

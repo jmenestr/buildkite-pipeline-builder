@@ -1,3 +1,4 @@
+import { pruneJSON } from "../../utils";
 import { BaseStep, StepShape } from "../base/BaseStep";
 import { JSONSerialization } from "../base/serialization";
 import { CommandStep, CommandStepShape } from "../command";
@@ -29,7 +30,7 @@ export class GroupStep extends BaseStep implements JSONSerialization<GroupStepSh
     }
 
     toJSON() {
-        return BaseStep.pruneJson({
+        return pruneJSON({
             ...super.toJSON(),
             steps: this._steps.map(step => step.toJSON()),
             key: this._key,

@@ -1,3 +1,4 @@
+import { pruneJSON } from "../../utils";
 import { BaseInputShape, BaseInputStep } from "../base/BaseInput";
 import { BaseStep } from "../base/BaseStep";
 import { JSONSerialization } from "../base/serialization";
@@ -16,17 +17,9 @@ export class InputStep extends BaseInputStep implements JSONSerialization<InputS
         this._input = input;
     }
     toJSON() {
-        return BaseStep.pruneJson({
+        return pruneJSON({
             ...super.toJSON(),
             input: this._input,
         })
     }
 }
-
-const inputStep = new InputStep('Input data')
-
-
-inputStep
-    .fields.add()
-    .fields.add()
-

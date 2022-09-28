@@ -6,16 +6,14 @@ import { CommandStep, Pipeline } from '../src';
 const schema = require('./schema.json');
 const draft6MetaSchema = require("ajv/dist/refs/json-schema-draft-06.json")
 
-
+const ajv = new Ajv({
+    strictSchema: false
+})
+ajv.addMetaSchema(draft6MetaSchema)
+const validate = ajv.compile(schema)
 
 test('simple schema', t => {
-    const ajv = new Ajv({
-        strictSchema: false
-    })
-    ajv.addMetaSchema(draft6MetaSchema)
 
-
-    const validate = ajv.compile(schema)
     const pipeline = new Pipeline('pipeline')
     const step = new CommandStep('command')
     pipeline.addSteps(step);
@@ -24,13 +22,6 @@ test('simple schema', t => {
 
 
 test('complicated schema', t => {
-    const ajv = new Ajv({
-        strictSchema: false
-    })
-    ajv.addMetaSchema(draft6MetaSchema)
-
-
-    const validate = ajv.compile(schema)
     const pipeline = new Pipeline('test-pipeline')
 
     const buildAndInstall = new CommandStep(
@@ -50,7 +41,6 @@ test('complicated schema', t => {
 
     pipeline.addSteps(buildAndInstall, test)
     
-    console.log(JSON.stringify(pipeline.toJSON()), validate(pipeline.toJSON()))
     t.is(validate(pipeline.toJSON()), true)
 
 })

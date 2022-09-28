@@ -1,3 +1,4 @@
+import { pruneJSON } from "../../utils";
 import { BaseStep, StepShape } from "../base/BaseStep";
 import { JSONSerialization } from "../base/serialization";
 
@@ -128,7 +129,7 @@ private _timeout_in_minutes?: number;
     }
 
     toJSON() {
-        return BaseStep.pruneJson({
+        return pruneJSON({
             ...super.toJSON(),
             commands: this._commands,
             label: this._label,

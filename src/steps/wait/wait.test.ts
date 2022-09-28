@@ -10,7 +10,6 @@ test('empty wait step only returns ~', t => {
     )
 });
 
-
 test('can correctly add a if condition', t => {
     const wait = new WaitStep();
 

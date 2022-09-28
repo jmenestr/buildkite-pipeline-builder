@@ -4,7 +4,7 @@ import { TextField } from "./TextField";
 
 export class Fields<T> implements JSONSerialization<any> {
     private _parent: T;
-    private _fields: Array<SelectField | TextField>;
+    private _fields: Array<SelectField | TextField> = [];
 
     constructor(parent: T) {
         this._parent = parent;

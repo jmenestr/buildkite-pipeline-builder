@@ -1,3 +1,4 @@
+import { pruneJSON } from "../../utils";
 import { BaseStep, StepShape } from "../base/BaseStep";
 import { JSONSerialization } from "../base/serialization";
 
@@ -23,7 +24,7 @@ export class WaitStep extends BaseStep implements JSONSerialization<WaitStepShap
     }
 
     toJSON() {
-        return BaseStep.pruneJson({
+        return pruneJSON({
             ...super.toJSON(),
             wait: this._wait,
             if: this._if,
