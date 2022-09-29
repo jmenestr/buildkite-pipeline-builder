@@ -14,7 +14,7 @@ type ManualRetry = boolean | {
 }
 
 export type CommandStepShape = StepShape<{
-    commands: Array<String>;
+    commands: Array<string>;
     label?: string;
     agent?: { [agentKey: string]: string }
     artifact_paths?: Array<string>;
@@ -39,7 +39,7 @@ export type CommandStepShape = StepShape<{
 */
 export class CommandStep extends BaseStep implements JSONSerialization<CommandStepShape> {
 
-private _commands: Array<String> = [];
+private _commands: Array<string> = [];
 private _label: string | undefined = undefined;
 private _agent: { [agentKey: string]: string };
 // withArtifacts <-- DONE
