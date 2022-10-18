@@ -16,7 +16,7 @@ test('simple schema', t => {
 
     const pipeline = new Pipeline('pipeline')
     const step = new CommandStep('command')
-    pipeline.addSteps(step);
+    pipeline.steps.add(step);
     t.is(validate(pipeline.toJSON()), true)
 })
 
@@ -34,12 +34,12 @@ test('complicated schema', t => {
     /**
      * TODO: Make this API a big easier to use.
      */
-    const keys = buildAndInstall.key as string;
+    const keys = buildAndInstall.key;
     const test = 
         new CommandStep('yarn test', 'test')
             .dependsOn(keys)
 
-    pipeline.addSteps(buildAndInstall, test)
+    pipeline.steps.add(buildAndInstall, test)
     
     t.is(validate(pipeline.toJSON()), true)
 

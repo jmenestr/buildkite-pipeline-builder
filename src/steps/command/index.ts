@@ -1,10 +1,14 @@
 import { pruneJSON } from "../../utils";
 import { BaseStep, StepShape } from "../base/BaseStep";
+import { ChainableList } from "../base/chainable-list";
 import { JSONSerialization } from "../base/serialization";
+
+
+type RetryType = 'manual' | 'automatic'
 
 type AutomaticRetry = boolean | {
     exit_status?: '*' | number
-    limit: number
+    limit?: number
 }
 
 type ManualRetry = boolean | {
@@ -27,18 +31,30 @@ export type CommandStepShape = StepShape<{
     // Keys should be unique in the entire workflow
     key?: string;
     parallelism?: number;
-    plugins?: Map<string, unknown>
+    plugins?: Array<{ [pluginName: string]: unknown }>
     priority?: number
-    retry?: Map<'automatic', AutomaticRetry> | Map<'manual', ManualRetry>
+    retry?: { 'automatic': AutomaticRetry } | { 'manual': ManualRetry }
     skip?: boolean | string;
     timeout_in_minutes?: number;
 }>
+
+class Plugin<T = {}> implements JSONSerialization<{ [pluginName: string]: T}> {
+    constructor(public name: string, public config: T) {}
+    toJSON() {
+        return {
+            [this.name]: this.config
+        }
+    }
+}
+
+const cachePlugin = new Plugin('nam', { hello: 'hello'})
 
 /** 
  * Command Step
 */
 export class CommandStep extends BaseStep implements JSONSerialization<CommandStepShape> {
 
+public plugins = new ChainableList<CommandStep, { [pluginName: string]: unknown }, Plugin>(this)
 private _commands: Array<string> = [];
 private _label: string | undefined = undefined;
 private _agent: { [agentKey: string]: string };
@@ -53,16 +69,13 @@ private _concurrency_group?: string;
 // withEnv({ ...key/value})
 private _env?: Map<string, string>
 private _if?: string;
- // Keys should be unique in the entire workflow
-private _key?: string;
-public get key() { return this._key }
 
 private _parallelism?: number;
 // withPlugin(plugin)
 private _plugins?: Map<string, unknown>
 private _priority?: number
 // withRetry
-private _retry?: Map<'automatic', AutomaticRetry> | Map<'manual', ManualRetry>
+private _retry?: { automatic: AutomaticRetry } | { manual: ManualRetry }
 private _skip?: boolean | string;
 // withTimeout
 private _timeout_in_minutes?: number;
@@ -123,8 +136,18 @@ private _timeout_in_minutes?: number;
         return this;
     }
 
-    public withKey(key: string /** KeyableStep */) {
-        this._key = key;
+    withRetry(retryType: 'automatic', config:  AutomaticRetry);
+    withRetry(retryType: 'manual', config: ManualRetry)
+    withRetry(retryType: unknown, config: unknown) {
+        if (retryType === 'manual') {
+            this._retry = {
+                [retryType as 'manual']: config as ManualRetry
+            }
+        } else {
+            this._retry = {
+                [retryType as 'automatic']: config as AutomaticRetry
+            }
+        }
         return this;
     }
 
@@ -134,11 +157,17 @@ private _timeout_in_minutes?: number;
             commands: this._commands,
             label: this._label,
             agent: this._agent,
-            key: this._key,
             concurrency: this._concurrency,
+            plugins: this.plugins.toJSON(),
             concurrency_group: this._concurrency_group,
             timeout_in_minutes: this._timeout_in_minutes,
             artifact_paths: Array.from(this._artifact_paths)
         })
     }
 }
+
+
+const c = new CommandStep('asdf');
+c
+    .plugins.add(new Plugin('hello', { hello: 'hello'}))
+    .withRetry('automatic',  { exit_status: '*'})

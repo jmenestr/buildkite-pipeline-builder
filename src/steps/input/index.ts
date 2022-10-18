@@ -5,7 +5,7 @@ import { JSONSerialization } from "../base/serialization";
 
 
 
-type InputStepShape = BaseInputShape<{
+export type InputStepShape = BaseInputShape<{
     input: string;
 }>
 export class InputStep extends BaseInputStep implements JSONSerialization<InputStepShape> {

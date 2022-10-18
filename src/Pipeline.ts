@@ -3,24 +3,25 @@ import * as fs from 'fs/promises';
 import { GroupStep, GroupStepShape } from "./steps/group";
 import { TriggerStepShape } from "./steps/trigger";
 import { JSONSerialization } from "./steps/base/serialization";
+import { ChainableList } from "./steps/base/chainable-list";
+import { InputStep } from "./steps";
+import { BlockStep, BlockStepShape } from "./steps/block";
+import { InputStepShape } from "./steps/input";
 
-type Steps = Array<CommandStep | GroupStep | CommandStep> 
+type AllowedSteps = CommandStep | GroupStep | CommandStep | InputStep | BlockStep
+type Steps = Array<AllowedSteps> 
 type Stringify = (pipelineObject: PipelineShape) => string;
 
 type PipelineShape = {
-    steps: Array<CommandStepShape | GroupStepShape | TriggerStepShape>
+    steps: Array<CommandStepShape | GroupStepShape | TriggerStepShape | InputStepShape | BlockStepShape>
 }
 export class Pipeline implements JSONSerialization<PipelineShape> {
-    private _steps: Steps = [];
+    public steps = new ChainableList<Pipeline, CommandStepShape | GroupStepShape | TriggerStepShape | InputStepShape | BlockStepShape, AllowedSteps>(this, 'key')
     constructor(public readonly name: string) {}
-
-    addSteps(...steps: Steps ) {
-        this._steps.push(...steps);
-    }
 
     toJSON() {
         return {
-            steps: this._steps.map(step => step.toJSON())
+            steps: this.steps.toJSON()
         }
     }
 
